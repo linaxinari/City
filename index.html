@@ -15,38 +15,10 @@
             overflow: hidden;
             font-family: Arial, sans-serif;
         }
-
-        #counter {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(0,0,0,0.7);
-            color: white;
-            padding: 10px 15px;
-            border-radius: 20px;
-            z-index: 1000;
-        }
-
-        #btn {
-            position: absolute; 
-            bottom: 20px; 
-            left: 50%; 
-            transform: translateX(-50%); 
-            z-index: 1000;
-            padding: 10px 20px;
-            background: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
     </style>
 </head>
 
 <body>
-
-    <!-- Added missing counter and button elements -->
-    <div id="counter">1/1</div>
-    <button id="btn">Next Model</button>
 
     <a-scene
         embedded
@@ -87,24 +59,13 @@
         // Ensure everything is loaded before running script
         window.addEventListener('load', () => {
             const modelEntity = document.getElementById('model');
-            const btn = document.getElementById('btn');
-            const counter = document.getElementById('counter');
 
             function loadModel(index) {
                 const model = models[index];
                 if (modelEntity) {
                     modelEntity.setAttribute('gltf-model', `#${model.id}`);
                 }
-                if (counter) {
-                    counter.textContent = `${index + 1}/${models.length}`;
-                }
                 console.log('Loaded:', model.id);
-            }
-
-            if (btn) {
-                btn.addEventListener('click', () => {
-                    currentModelIndex = (currentModelIndex + 1) % models.length;
-                    loadModel(currentModelIndex);
                 });
             }
 
