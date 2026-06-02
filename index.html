@@ -49,28 +49,22 @@
         <a-entity camera></a-entity>
     </a-scene>
 
-    <script>
-        const models = [
-            { id: 'chestnuts', name: 'Chestnuts' }
-        ];
+<script>
+    const models = [
+        { id: 'chestnuts', name: 'Chestnuts' }
+    ];
 
-        let currentModelIndex = 0;
+    window.addEventListener('load', () => {
+        const modelEntity = document.getElementById('model');
 
-        // Ensure everything is loaded before running script
-        window.addEventListener('load', () => {
-            const modelEntity = document.getElementById('model');
-
-            function loadModel(index) {
-                const model = models[index];
-                if (modelEntity) {
-                    modelEntity.setAttribute('gltf-model', `#${model.id}`);
-                }
-                console.log('Loaded:', model.id);
-                });
+        function loadModel(index) {
+            const model = models[index];
+            if (modelEntity) {
+                modelEntity.setAttribute('gltf-model', `#${model.id}`);
             }
-
-            loadModel(0);
-        });
-    </script>
+        }
+        loadModel(0); // Loads the first model automatically
+    });
+</script>
 </body>
 </html>
