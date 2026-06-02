@@ -50,7 +50,7 @@
 
 <a-marker
     type="pattern"
-    url="https://raw.githubusercontent.com/linaxinari/NYC/main/pattern-qr-code1.patt">
+    url="https://raw.githubusercontent.com/linaxinari/NYC/main/pattern-starmoonqr.patt">
 
     <a-entity
         id="model"
@@ -69,8 +69,6 @@
 <script>
 
 const models = [
-    { id: 'cutecat', name: 'Cat' },
-    { id: 'bunny1', name: 'Bunny' },
     { id: 'chestnuts', name: 'Chestnuts' }
 ];
 
@@ -79,8 +77,6 @@ let currentModelIndex = 0;
 window.addEventListener('load', () => {
 
     const modelEntity = document.getElementById('model');
-    const btn = document.getElementById('surprise-btn');
-    const counter = document.getElementById('counter');
 
     console.log('modelEntity:', modelEntity);
 
