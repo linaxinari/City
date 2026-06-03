@@ -13,7 +13,7 @@
 </head>
 <body>
     <a-scene
-        mindar-image="imageTargetSrc: https://raw.githubusercontent.com/linaxinari/AL/main/targets.mind;"
+        mindar-image="imageTargetSrc: https://raw.githubusercontent.com/linaxinari/City/main/targets.mind;"
         color-space="sRGB"
         renderer="colorManagement: true, physicallyCorrectLights"
         vr-mode-ui="enabled: false"
@@ -22,7 +22,7 @@
         <a-assets>
             <a-asset-item
                 id="bunny"
-                src="https://raw.githubusercontent.com/linaxinari/AL/main/bunny.glb">
+                src="https://raw.githubusercontent.com/linaxinari/City/main/catheart.glb">
             </a-asset-item>
         </a-assets>
 
@@ -30,10 +30,10 @@
 
         <a-entity mindar-image-target="targetIndex: 0" id="target">
 
-            <!-- Bunny -->
+            <!-- catheart -->
             <a-entity
-                id="bunny-entity"
-                gltf-model="#bunny"
+                id="catheart-entity"
+                gltf-model="#catheart"
                 position="0 0 0"
                 scale="0 0 0">
             </a-entity>
@@ -50,7 +50,7 @@
         function createParticle() {
             const particle = document.createElement('a-sphere');
 
-            // Random position in a circle around the bunny
+            // Random position in a circle around the catheart
             const angle = Math.random() * Math.PI * 2;
             const radius = 0.1 + Math.random() * 0.25;
             const x = Math.cos(angle) * radius;
@@ -111,7 +111,7 @@
         }
 
         document.querySelector('#target').addEventListener('targetFound', () => {
-            document.querySelector('#bunny-entity').setAttribute('animation', {
+            document.querySelector('#catheart-entity').setAttribute('animation', {
                 property: 'scale',
                 from: '0 0 0',
                 to: '0.5 0.5 0.5',
@@ -122,7 +122,7 @@
         });
 
         document.querySelector('#target').addEventListener('targetLost', () => {
-            document.querySelector('#bunny-entity').setAttribute('animation', {
+            document.querySelector('#catheart-entity').setAttribute('animation', {
                 property: 'scale',
                 from: '0.5 0.5 0.5',
                 to: '0 0 0',
