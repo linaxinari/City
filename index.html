@@ -2,69 +2,136 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, user-scalable=yes, minimum-scale=1.0, maximum-scale=2.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>NYC AR</title>
-
-    <!-- Corrected: Removed markdown backticks and kept scripts inside <head> -->
-    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image.prod.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aframe/1.4.2/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
     <style>
-        body {
-            margin: 0;
-            overflow: hidden;
-            font-family: Arial, sans-serif;
-        }
+        body { margin: 0; overflow: hidden; }
     </style>
 </head>
-
 <body>
-
     <a-scene
-        embedded
-        arjs="sourceType: webcam; debugUIEnabled: false;"
-        vr-mode-ui="enabled: false">
+        mindar-image="imageTargetSrc: https://raw.githubusercontent.com/linaxinari/AL/main/targets.mind;"
+        color-space="sRGB"
+        renderer="colorManagement: true, physicallyCorrectLights"
+        vr-mode-ui="enabled: false"
+        device-orientation-permission-ui="enabled: false">
 
         <a-assets>
             <a-asset-item
-                id="chestnuts"
-                src="https://raw.githubusercontent.com/linaxinari/City/main/chestnuts.glb">
+                id="bunny"
+                src="https://raw.githubusercontent.com/linaxinari/AL/main/bunny.glb">
             </a-asset-item>
         </a-assets>
 
-<a-marker
-            type="pattern"
-            url="https://raw.githubusercontent.com/linaxinari/City/main/starmoon.patt">
-        
+        <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+        <a-entity mindar-image-target="targetIndex: 0" id="target">
+
+            <!-- Bunny -->
             <a-entity
-                id="model"
-                position="0 0.5 0"
-                rotation="0 0 0"
-                scale="2 2 2"
-                gltf-model="#chestnuts">
+                id="bunny-entity"
+                gltf-model="#bunny"
+                position="0 0 0"
+                scale="0 0 0">
             </a-entity>
 
-        </a-marker>
+            <!-- Magic dust particles container -->
+            <a-entity id="particles" visible="false"></a-entity>
 
-        <a-entity camera></a-entity>
+        </a-entity>
+
     </a-scene>
 
-<script>
-    const models = [
-        { id: 'chestnuts', name: 'Chestnuts' }
-    ];
+    <script>
+        // Create a single dust particle
+        function createParticle() {
+            const particle = document.createElement('a-sphere');
 
-    window.addEventListener('load', () => {
-        const modelEntity = document.getElementById('model');
+            // Random position in a circle around the bunny
+            const angle = Math.random() * Math.PI * 2;
+            const radius = 0.1 + Math.random() * 0.25;
+            const x = Math.cos(angle) * radius;
+            const z = Math.sin(angle) * radius;
+            const y = Math.random() * 0.6;
 
-        function loadModel(index) {
-            const model = models[index];
-            if (modelEntity) {
-                modelEntity.setAttribute('gltf-model', `#${model.id}`);
-            }
+            // Random color — gold, purple, white
+            const colors = ['#FFD700', '#DA70D6', '#ffffff', '#87CEEB', '#FFB6C1'];
+            const color = colors[Math.floor(Math.random() * colors.length)];
+
+            const size = 0.01 + Math.random() * 0.02;
+
+            particle.setAttribute('position', `${x} ${y} ${z}`);
+            particle.setAttribute('radius', size);
+            particle.setAttribute('color', color);
+            particle.setAttribute('material', 'shader: flat; opacity: 0.9');
+
+            // Animate: float upward and fade out
+            const dur = 1200 + Math.random() * 1000;
+            particle.setAttribute('animation__move', {
+                property: 'position',
+                to: `${x + (Math.random() - 0.5) * 0.1} ${y + 0.3} ${z + (Math.random() - 0.5) * 0.1}`,
+                dur: dur,
+                easing: 'easeOutQuad'
+            });
+            particle.setAttribute('animation__fade', {
+                property: 'material.opacity',
+                from: 0.9,
+                to: 0,
+                dur: dur,
+                easing: 'easeInQuad'
+            });
+
+            // Remove particle after animation
+            setTimeout(() => particle.remove(), dur);
+
+            return particle;
         }
-        loadModel(0); // Loads the first model automatically
-    });
-</script>
+
+        let particleInterval = null;
+
+        function startParticles() {
+            const container = document.querySelector('#particles');
+            container.setAttribute('visible', 'true');
+            particleInterval = setInterval(() => {
+                for (let i = 0; i < 3; i++) {
+                    container.appendChild(createParticle());
+                }
+            }, 150);
+        }
+
+        function stopParticles() {
+            clearInterval(particleInterval);
+            const container = document.querySelector('#particles');
+            container.setAttribute('visible', 'false');
+            // Clear remaining particles
+            while (container.firstChild) container.removeChild(container.firstChild);
+        }
+
+        document.querySelector('#target').addEventListener('targetFound', () => {
+            document.querySelector('#bunny-entity').setAttribute('animation', {
+                property: 'scale',
+                from: '0 0 0',
+                to: '0.5 0.5 0.5',
+                dur: 800,
+                easing: 'easeOutElastic'
+            });
+            startParticles();
+        });
+
+        document.querySelector('#target').addEventListener('targetLost', () => {
+            document.querySelector('#bunny-entity').setAttribute('animation', {
+                property: 'scale',
+                from: '0.5 0.5 0.5',
+                to: '0 0 0',
+                dur: 300,
+                easing: 'easeInQuad'
+            });
+            stopParticles();
+        });
+    </script>
+
 </body>
 </html>
