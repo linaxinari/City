@@ -104,9 +104,9 @@
             document.querySelector('#catheart-entity').setAttribute('animation', {
                 property: 'scale',
                 from: '0 0 0',
-                to: '1 1 1',
-                dur: 800,
-                easing: 'easeOutElastic'
+               to: '3 3 3',
+dur: 800,
+easing: 'easeOutElastic'
             });
             startParticles();
         });
@@ -114,8 +114,8 @@
         document.querySelector('#target').addEventListener('targetLost', () => {
             document.querySelector('#catheart-entity').setAttribute('animation', {
                 property: 'scale',
-                from: '0.8 0.8 0.8',
-                to: '0 0 0',
+                from: '3 3 3',
+to: '0 0 0',
                 dur: 300,
                 easing: 'easeInQuad'
             });
