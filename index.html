@@ -13,7 +13,7 @@
 </head>
 <body>
     <a-scene
-        mindar-image="imageTargetSrc: https://raw.githubusercontent.com/linaxinari/City/main/targets.mind;"
+        mindar-image="imageTargetSrc: https://raw.githubusercontent.com/linaxinari/City/main/starmoon.mind; filterMinCF: 0.02; filterBeta: 0.0001; missTolerance: 5; warmupTolerance: 10;"
         color-space="sRGB"
         renderer="colorManagement: true, physicallyCorrectLights"
         vr-mode-ui="enabled: false"
@@ -30,7 +30,6 @@
 
         <a-entity mindar-image-target="targetIndex: 0" id="target">
 
-            <!-- catheart -->
             <a-entity
                 id="catheart-entity"
                 gltf-model="#catheart"
@@ -38,7 +37,6 @@
                 scale="0 0 0">
             </a-entity>
 
-            <!-- Magic dust particles container -->
             <a-entity id="particles" visible="false"></a-entity>
 
         </a-entity>
@@ -46,33 +44,28 @@
     </a-scene>
 
     <script>
-        // Create a single dust particle
         function createParticle() {
             const particle = document.createElement('a-sphere');
 
-            // Random position in a circle around the catheart
             const angle = Math.random() * Math.PI * 2;
-            const radius = 0.1 + Math.random() * 0.25;
+            const radius = 0.3 + Math.random() * 0.5;
             const x = Math.cos(angle) * radius;
             const z = Math.sin(angle) * radius;
-            const y = Math.random() * 0.6;
+            const y = Math.random() * 1.2;
 
-            // Random color — gold, purple, white
             const colors = ['#FFD700', '#DA70D6', '#ffffff', '#87CEEB', '#FFB6C1'];
             const color = colors[Math.floor(Math.random() * colors.length)];
-
-            const size = 0.01 + Math.random() * 0.02;
+            const size = 0.03 + Math.random() * 0.05;
 
             particle.setAttribute('position', `${x} ${y} ${z}`);
             particle.setAttribute('radius', size);
             particle.setAttribute('color', color);
             particle.setAttribute('material', 'shader: flat; opacity: 0.9');
 
-            // Animate: float upward and fade out
             const dur = 1200 + Math.random() * 1000;
             particle.setAttribute('animation__move', {
                 property: 'position',
-                to: `${x + (Math.random() - 0.5) * 0.1} ${y + 0.3} ${z + (Math.random() - 0.5) * 0.1}`,
+                to: `${x + (Math.random() - 0.5) * 0.2} ${y + 0.5} ${z + (Math.random() - 0.5) * 0.2}`,
                 dur: dur,
                 easing: 'easeOutQuad'
             });
@@ -84,9 +77,7 @@
                 easing: 'easeInQuad'
             });
 
-            // Remove particle after animation
             setTimeout(() => particle.remove(), dur);
-
             return particle;
         }
 
@@ -106,7 +97,6 @@
             clearInterval(particleInterval);
             const container = document.querySelector('#particles');
             container.setAttribute('visible', 'false');
-            // Clear remaining particles
             while (container.firstChild) container.removeChild(container.firstChild);
         }
 
@@ -114,7 +104,7 @@
             document.querySelector('#catheart-entity').setAttribute('animation', {
                 property: 'scale',
                 from: '0 0 0',
-                to: '0.5 0.5 0.5',
+                to: '2 2 2',
                 dur: 800,
                 easing: 'easeOutElastic'
             });
@@ -124,7 +114,7 @@
         document.querySelector('#target').addEventListener('targetLost', () => {
             document.querySelector('#catheart-entity').setAttribute('animation', {
                 property: 'scale',
-                from: '0.5 0.5 0.5',
+                from: '2 2 2',
                 to: '0 0 0',
                 dur: 300,
                 easing: 'easeInQuad'
