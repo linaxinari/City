@@ -38,17 +38,16 @@
             </a-entity>
 
             <!-- Gold text above model -->
-            <a-entity
-                id="text-entity"
-                position="0 1.5 0"
-                scale="0 0 0"
-                text="value: Dr. Ding and Dr. M thank you for everything! Words can't explain how grateful I am to work and learn from you both. I appreciated all the words of encouragement and everything that was taught to me. Thank you for providing me with a place to grow, let's keep in touch! - Janice;
-                      color: #FFD700;
-                      align: center;
-                      width: 1.5;
-                      wrapCount: 30;
-                      font: https://cdn.aframe.io/fonts/Exo2SemiBold.fnt">
-            </a-entity>
+           <a-entity
+    id="text-entity"
+    position="0 1.5 0"
+    scale="0 0 0"
+    text="value: Dr. Ding and Dr. M thank you for everything! Words can't explain how grateful I am to work and learn from you both. I appreciated all the words of encouragement and everything that was taught to me. Thank you for providing me with a place to grow, let's keep in touch! - Janice;
+          color: #FFD700;
+          align: center;
+          width: 1.5;
+          wrapCount: 30;">
+</a-entity>
 
             <a-entity id="particles" visible="false"></a-entity>
 
@@ -127,7 +126,7 @@ easing: 'easeOutElastic'
                 document.querySelector('#text-entity').setAttribute('animation', {
                     property: 'scale',
                     from: '0 0 0',
-                    to: '1 1 1',
+                    to: '0.5 0.5 0.5',
                     dur: 600,
                     easing: 'easeOutElastic'
                 });
@@ -138,7 +137,7 @@ easing: 'easeOutElastic'
         document.querySelector('#target').addEventListener('targetLost', () => {
             document.querySelector('#catheart-entity').setAttribute('animation', {
                 property: 'scale',
-from: '0.8 0.8 0.8',
+from: '0.5 0.5 0.5',
 to: '0 0 0',
                 dur: 300,
                 easing: 'easeInQuad'
